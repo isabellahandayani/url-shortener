@@ -21,10 +21,11 @@ export const get = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
   try {
-    const { originalUrl } = req.body;
+    const { originalUrl, name } = req.body;
 
     if (!isUri(originalUrl)) {
       res.status(401).json({ message: "Invalid Url" });
+      return;
     }
 
     const url = await Url.findOne({
@@ -34,7 +35,7 @@ export const create = async (req: Request, res: Response) => {
     if (url) {
       res.status(301).json({ url: originalUrl, message: "Previous url found" });
     } else {
-      const id = generate();
+      const id = name ? name : generate();
       const newUrl = new Url({
         urlId: id,
         originalUrl: originalUrl,
