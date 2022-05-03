@@ -9,13 +9,13 @@ export const get = async (req: Request, res: Response) => {
     if (url) {
       url.clicks++;
       url.save();
-      res.redirect(url.originalUrl);
+      res.status(200).send({ message: url.originalUrl });
     } else {
-      res.status(404).send("Not found");
+      res.status(404).send({ message: "Not Found" });
     }
   } catch (err: any) {
     console.error(err);
-    res.status(500).send(err.message);
+    res.status(500).send({ message: err.message });
   }
 };
 
@@ -45,6 +45,6 @@ export const create = async (req: Request, res: Response) => {
       res.status(200).json({ url: id, message: "Url created successfully" });
     }
   } catch (err: any) {
-    res.status(500).send(err.message);
+    res.status(500).send({ message: err.message });
   }
 };
