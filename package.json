@@ -4,10 +4,14 @@
   "description": "",
   "main": "main.ts",
   "scripts": {
-    "start": "tsc && ts-node-dev src/main.ts",
+    "start": "node dist/main.js",
+    "dev": "tsc && ts-node-dev src/main.ts",
     "lint": "eslint . --fix"
   },
-  "author": "",
+  "engines": {
+    "node": "16.4.0"
+  },
+  "author": "meongracun",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
