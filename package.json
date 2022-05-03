@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.ts",
   "scripts": {
-    "start": "tsc && node dist/main.js",
+    "start": "node dist/main.js",
     "dev": "tsc && ts-node-dev src/main.ts",
     "lint": "eslint . --fix"
   },
