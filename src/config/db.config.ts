@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import { ConnectOptions } from "mongodb";
+import { ConnectOptions, ServerApiVersion } from "mongodb";
 
 dotenv.config({ path: "./.env" });
 
@@ -11,8 +11,7 @@ const connectDB = async () => {
     await mongoose
       .connect(uri, {
         useNewUrlParser: true,
-        useUnifiedTopology: true,
-        serverSelectionTimeoutMS: 5000,
+        serverApi: ServerApiVersion.v1
       } as ConnectOptions)
       .then((x) => {
         console.log(
