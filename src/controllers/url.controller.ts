@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { generate } from "shortid";
-import { isUri } from "valid-url";
 import Url from "../models/url.model";
 
 export const get = async (req: Request, res: Response) => {
@@ -23,17 +22,14 @@ export const create = async (req: Request, res: Response) => {
   try {
     const { originalUrl, name } = req.body;
 
-    if (!isUri(originalUrl)) {
-      res.status(401).json({ message: "Invalid Url" });
-      return;
-    }
-
-    const url = await Url.findOne({
-      originalUrl,
+    const previousName = await Url.findOne({
+      urlId: name
     });
 
-    if (url) {
-      res.status(301).json({ url: originalUrl, message: "Previous url found" });
+    console.log(previousName)
+
+    if (previousName) {
+      res.status(301).json({ url: originalUrl, message: "Previous name found" });
     } else {
       const id = name ? name : generate();
       const newUrl = new Url({
@@ -43,6 +39,21 @@ export const create = async (req: Request, res: Response) => {
 
       await newUrl.save();
       res.status(200).json({ url: id, message: "Url created successfully" });
+    }
+  } catch (err: any) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
+export const validate = async (req: Request, res: Response) => {
+  try {
+    const { name } = req.body;
+    const previousId = await Url.findOne({ urlId: name });
+
+    if (previousId) {
+      res.status(404).json({ url: name, message: "Previous name found" });
+    } else {
+      res.status(200).json({ message: "Not Found" });
     }
   } catch (err: any) {
     res.status(500).send({ message: err.message });
