@@ -8,7 +8,7 @@ export const get = async (req: Request, res: Response) => {
     if (url) {
       url.clicks++;
       url.save();
-      res.status(200).send({ message: url.originalUrl });
+      res.status(200).send({ url: url.originalUrl });
     } else {
       res.status(404).send({ message: "Not Found" });
     }
@@ -25,8 +25,6 @@ export const create = async (req: Request, res: Response) => {
     const previousName = await Url.findOne({
       urlId: name
     });
-
-    console.log(previousName)
 
     if (previousName) {
       res.status(301).json({ url: originalUrl, message: "Previous name found" });
